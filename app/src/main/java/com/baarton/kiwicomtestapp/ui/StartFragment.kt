@@ -1,4 +1,4 @@
-package com.baarton.kiwicomtestapp.ui.main
+package com.baarton.kiwicomtestapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.baarton.kiwicomtestapp.R
-import com.baarton.kiwicomtestapp.network.MySingleton
+import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import java.util.logging.Logger
 
 class StartFragment : Fragment() {
-
-
 
     companion object {
         fun newInstance() = StartFragment()
@@ -42,7 +39,9 @@ class StartFragment : Fragment() {
 
     private fun start() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.container, ResultsFragment.newInstance())
+            .replace(R.id.container,
+                ResultsFragment.newInstance()
+            )
             .commitNow()
     }
 

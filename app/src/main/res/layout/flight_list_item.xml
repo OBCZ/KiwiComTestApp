@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fight_item_card">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/flight_item_guideline_vertical_75"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66"/>
+
+        <!--TODO some images-->
+        <ImageView
+            android:id="@+id/flight_item_img"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_launcher_background"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toStartOf="@id/flight_item_guideline_vertical_75" />
+
+        <TextView
+            android:id="@+id/flight_item_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_75"
+            app:layout_constraintEnd_toStartOf="@id/flight_item_from_to_img"
+            app:layout_constraintBottom_toTopOf="@id/flight_item_duration"
+            tools:text="PRG"/>
+
+        <ImageView
+            android:id="@+id/flight_item_from_to_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_flight_24"
+            android:rotation="90"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/flight_item_price"
+            app:layout_constraintStart_toEndOf="@id/flight_item_from"
+            app:layout_constraintEnd_toStartOf="@id/flight_item_to" />
+
+        <TextView
+            android:id="@+id/flight_item_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/flight_item_from_to_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/flight_item_price"
+            tools:text="HER"/>
+
+        <TextView
+            android:id="@+id/flight_item_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/flight_item_from"
+            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_75"
+            app:layout_constraintEnd_toStartOf="@id/flight_item_price"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="2h 55m"/>
+
+        <TextView
+            android:id="@+id/flight_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/flight_item_to"
+            app:layout_constraintStart_toEndOf="@id/flight_item_duration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="505"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

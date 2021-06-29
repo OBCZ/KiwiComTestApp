@@ -1,4 +1,4 @@
-package com.baarton.kiwicomtestapp.ui.main
+package com.baarton.kiwicomtestapp.ui.results
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +18,5 @@ class ResultsViewModel : ViewModel() {
         infoTextVisibility.value = View.VISIBLE
         progressBarVisibility.value = View.GONE
     }
-
 
 }

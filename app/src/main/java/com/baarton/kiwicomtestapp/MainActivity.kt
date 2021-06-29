@@ -2,8 +2,7 @@ package com.baarton.kiwicomtestapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.baarton.kiwicomtestapp.ui.main.ResultsFragment
-import com.baarton.kiwicomtestapp.ui.main.StartFragment
+import com.baarton.kiwicomtestapp.ui.StartFragment
 
 class MainActivity : AppCompatActivity() {
 
