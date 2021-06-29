@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KiwiComTestApp</string>
+    <string name="button_start">Show me some flights for today!</string>
 </resources>
