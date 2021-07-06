@@ -16,7 +16,7 @@ object ResponseParser {
         val flightData: FlightData?
 
         try {
-            flightData = Gson().fromJson<FlightData>(response, FlightData::class.java)
+            flightData = Gson().fromJson(response, FlightData::class.java)
         } catch (e: JsonSyntaxException) {
             logger.log(Level.SEVERE, "Caught an exception when parsing response. Response:\n$response. Exception:\n${e.localizedMessage}")
             return emptyList()

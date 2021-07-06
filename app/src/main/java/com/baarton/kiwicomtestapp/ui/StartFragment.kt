@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.baarton.kiwicomtestapp.R
+import com.baarton.kiwicomtestapp.db.AppDatabase
 import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
+import kotlinx.coroutines.*
 import java.util.logging.Logger
+
 
 class StartFragment : Fragment() {
 
@@ -20,6 +23,7 @@ class StartFragment : Fragment() {
     }
 
     private lateinit var btnStart: Button
+    private lateinit var btnNuke: Button
 
 
     override fun onCreateView(
@@ -35,6 +39,13 @@ class StartFragment : Fragment() {
 
         btnStart = view.findViewById(R.id.btn_start)
         btnStart.setOnClickListener { start() }
+
+
+        //TODO remove after tests
+        btnNuke = view.findViewById(R.id.btn_nuke)
+        btnNuke.setOnClickListener { runBlocking {
+            launch { AppDatabase.getInstance(requireContext()).flightDao().nuke() }
+        } }
     }
 
     private fun start() {

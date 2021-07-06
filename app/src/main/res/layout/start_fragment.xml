@@ -14,4 +14,13 @@
         android:padding="10dp"
         android:text="@string/button_start" />
 
+    <!--TODO remove after tests-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_nuke"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:padding="10dp"
+        android:text="NUKE" />
+
 </LinearLayout>

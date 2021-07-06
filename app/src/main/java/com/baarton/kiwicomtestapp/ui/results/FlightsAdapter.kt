@@ -14,7 +14,7 @@ import com.baarton.kiwicomtestapp.data.Flight
 
 class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
-    var context: Context? = null
+    private var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.flight_list_item, parent, false)

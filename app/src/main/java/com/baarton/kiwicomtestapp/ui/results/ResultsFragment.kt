@@ -8,16 +8,18 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.baarton.kiwicomtestapp.R
+import com.baarton.kiwicomtestapp.data.Flight
+import com.baarton.kiwicomtestapp.db.AppDatabase
+import com.baarton.kiwicomtestapp.db.toDb
 import com.baarton.kiwicomtestapp.request.RequestHelper
 import com.baarton.kiwicomtestapp.response.ResponseParser
+import kotlinx.coroutines.*
 
 
 class ResultsFragment : Fragment() {
@@ -25,6 +27,8 @@ class ResultsFragment : Fragment() {
     companion object {
         fun newInstance() = ResultsFragment()
     }
+
+    lateinit var db: AppDatabase
 
     private lateinit var viewModel: ResultsViewModel
 
@@ -37,6 +41,7 @@ class ResultsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         RequestHelper.initQueue(context)
+        db = AppDatabase.getInstance(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,29 +64,41 @@ class ResultsFragment : Fragment() {
 
         observeLiveData()
 
-        requestData() //TODO if not any DB data present? cache?
+        //TODO if DB data present
+        // > if so, check last saved date from shared prefs
+        //   > if new day, nuke DB and request new data
+        //   > if same day use DB data
+        // > if not, request new data
+        requestData()
     }
 
     private fun observeLiveData() {
-        viewModel.overviewText.observe(viewLifecycleOwner,
-            Observer<String> { newText -> overviewTextView.text = newText })
-        viewModel.infoText.observe(viewLifecycleOwner,
-            Observer<String> { newText -> infoTextView.text = newText })
-        viewModel.infoTextVisibility.observe(viewLifecycleOwner,
-            Observer<Int> { newVisibility -> infoTextView.visibility = newVisibility })
-        viewModel.progressBarVisibility.observe(viewLifecycleOwner,
-            Observer<Int> { newVisibility -> progressBar.visibility = newVisibility })
+        viewModel.overviewText.observe(viewLifecycleOwner, { newText -> overviewTextView.text = newText })
+        viewModel.infoText.observe(viewLifecycleOwner, { newText -> infoTextView.text = newText })
+        viewModel.infoTextVisibility.observe(viewLifecycleOwner, { newVisibility -> infoTextView.visibility = newVisibility })
+        viewModel.progressBarVisibility.observe(viewLifecycleOwner, { newVisibility -> progressBar.visibility = newVisibility })
     }
 
     private fun requestData() {
         setLoadingInfo()
         RequestHelper.queueRequest(
-            Response.Listener { response ->
-                flightsAdapter.flights = ResponseParser.parse(response)
+            { response ->
+                val result = ResponseParser.parse(response)
+                flightsAdapter.flights = result
                 flightsAdapter.notifyDataSetChanged()
                 setLoadingComplete()
+
+                //TODO musim vytvorit vlastni coroutine context?
+                 runBlocking { launch {
+                    db.flightDao().insertAll(*result.map {
+                        flight: Flight -> toDb(flight)
+                    }.toTypedArray())
+                } }
+
+                //TODO save today'S date to shared prefs
+
             },
-            Response.ErrorListener { error ->
+            { error ->
                 setLoadingError(error)
             }
         )
@@ -90,7 +107,7 @@ class ResultsFragment : Fragment() {
     private fun setLoadingError(error: VolleyError) {
         viewModel.progressBarVisibility.value = View.GONE
         viewModel.infoTextVisibility.value = View.VISIBLE
-        viewModel.infoText.value = "That didn't work!\nError:\n${error.networkResponse}"
+        viewModel.infoText.value = "That didn't work!\nError:\n${error.message}"
     }
 
     private fun setLoadingComplete() {

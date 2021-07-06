@@ -11,6 +11,7 @@ import com.baarton.kiwicomtestapp.ui.StartFragment
 // > exceptions handling and logging at least
 // > layout refresh, cleanup + styles extractions
 // > permission checks? network connectivity?
+// > let db be asynchronous
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
