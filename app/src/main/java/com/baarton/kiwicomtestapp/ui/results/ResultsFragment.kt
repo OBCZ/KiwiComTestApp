@@ -59,10 +59,9 @@ class ResultsFragment : Fragment() {
 
         observeLiveData()
 
-        requestData() //TODO if not any DB data present?
+        requestData() //TODO if not any DB data present? cache?
     }
 
-    //TODO extract to view model?
     private fun observeLiveData() {
         viewModel.overviewText.observe(viewLifecycleOwner,
             Observer<String> { newText -> overviewTextView.text = newText })

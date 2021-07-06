@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Flight(
     @SerializedName("id")
-    internal val id: String,
+    internal val flightId: String,
     @SerializedName("dTime")
     internal val departureTime: String,
     @SerializedName("aTime")
