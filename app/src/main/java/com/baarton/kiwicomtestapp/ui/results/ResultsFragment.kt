@@ -1,5 +1,6 @@
 package com.baarton.kiwicomtestapp.ui.results
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,33 +13,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
 import com.baarton.kiwicomtestapp.R
-import com.baarton.kiwicomtestapp.network.MySingleton
-import org.json.JSONObject
-import java.util.logging.Logger
+import com.baarton.kiwicomtestapp.request.RequestHelper
+import com.baarton.kiwicomtestapp.response.ResponseParser
 
 
 class ResultsFragment : Fragment() {
 
     companion object {
         fun newInstance() = ResultsFragment()
-
-        val logger = Logger.getLogger("KIWISEARCH")
-
     }
 
     private lateinit var viewModel: ResultsViewModel
-
-    private lateinit var queue: RequestQueue
-
-    //TODO build the url request dynamically regarding the dates (current day + 1)
-    val url = "https://api.skypicker.com/flights?flyFrom=PRG&dateFrom=29/06/2021&dateTo=30/06/2021&partner=ondrejbartinterviewappsolution1&v=3"
-
 
     private lateinit var overviewTextView: TextView
     private lateinit var infoTextView: TextView
@@ -46,6 +34,10 @@ class ResultsFragment : Fragment() {
     private lateinit var flightsList: RecyclerView
     private val flightsAdapter: FlightsAdapter = FlightsAdapter(listOf())
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        RequestHelper.initQueue(context)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.results_fragment, container, false)
@@ -67,13 +59,7 @@ class ResultsFragment : Fragment() {
 
         observeLiveData()
 
-        queue = MySingleton.getInstance(this.requireContext()).requestQueue
-
-        loadData() //TODO if not any DB data present?
-    }
-
-    private fun clearData() {
-        updateLiveData("NO DATA LOADED")
+        requestData() //TODO if not any DB data present?
     }
 
     //TODO extract to view model?
@@ -88,59 +74,18 @@ class ResultsFragment : Fragment() {
             Observer<Int> { newVisibility -> progressBar.visibility = newVisibility })
     }
 
-    private fun loadData() {
+    private fun requestData() {
         setLoadingInfo()
-
-        // Request a string response from the provided URL.
-        val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            Response.Listener<String> { response ->
-//                val jObject = JSONObject(response)
-//                logger.log(Level.INFO, jObject.toString())
-                val dataArray = JSONObject(response).getJSONArray("data")  //TODO catch JSONException?
-//                logger.log(Level.INFO, "Result count: ${dataArray.length()}")
-
-           //     updateLiveData("Response is:\n${response.take(500)}")
-
-                val resultsToParse = mutableListOf<JSONObject>()
-                for (i in 0..4) {
-                    resultsToParse.add(dataArray.getJSONObject(i)) //TODO catch JSONException?
-                }
-
-                parse(resultsToParse)
-
-                //TODO parse result
-                setLoadingComplete(resultsToParse.size, dataArray.length())
-
+        RequestHelper.queueRequest(
+            Response.Listener { response ->
+                flightsAdapter.flights = ResponseParser.parse(response)
+                flightsAdapter.notifyDataSetChanged()
+                setLoadingComplete()
             },
             Response.ErrorListener { error ->
                 setLoadingError(error)
-               // updateLiveData("That didn't work!\nError:\n${error.networkResponse}")
             }
         )
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest)
-
-    }
-
-    //TODO extract somehow to separate parser class
-    private fun parse(resultsToParse: MutableList<JSONObject>) {
-        val flights = mutableListOf<Flight>()
-        for (jsonObject in resultsToParse) { //TODO catch JSONException?
-            flights.add(Flight(
-                    jsonObject.getString("id"),
-                    jsonObject.getString("dTime"),
-                    jsonObject.getString("aTime"),
-                    jsonObject.getString("fly_duration"),
-                    jsonObject.getString("flyFrom"),
-                    jsonObject.getString("cityFrom"),
-                    jsonObject.getString("flyTo"),
-                    jsonObject.getString("cityTo"),
-                    jsonObject.getString("price")
-            ))
-        }
-        flightsAdapter.flights = flights
-        flightsAdapter.notifyDataSetChanged()
     }
 
     private fun setLoadingError(error: VolleyError) {
@@ -149,10 +94,10 @@ class ResultsFragment : Fragment() {
         viewModel.infoText.value = "That didn't work!\nError:\n${error.networkResponse}"
     }
 
-    private fun setLoadingComplete(chosenLength: Int, totalLength: Int) {
+    private fun setLoadingComplete() {
         viewModel.progressBarVisibility.value = View.GONE
         viewModel.infoTextVisibility.value = View.GONE
-        viewModel.overviewText.value = "Showing results: $chosenLength/$totalLength"
+        viewModel.overviewText.value = "Showing 5 most popular destinations for today"
     }
 
     private fun setLoadingInfo() {
@@ -160,8 +105,9 @@ class ResultsFragment : Fragment() {
         viewModel.infoTextVisibility.value = View.GONE
     }
 
-    private fun updateLiveData(response: String) {
-        viewModel.infoText.value = response
+    override fun onStop() {
+        super.onStop()
+        RequestHelper.cancel()
     }
 
 }

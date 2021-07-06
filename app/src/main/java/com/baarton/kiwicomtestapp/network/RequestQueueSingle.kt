@@ -8,18 +8,19 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 
-//TODO clean + rename
-class MySingleton constructor(context: Context) {
+class RequestQueueSingle constructor(context: Context) {
+
     companion object {
         @Volatile
-        private var INSTANCE: MySingleton? = null
+        private var INSTANCE: RequestQueueSingle? = null
         fun getInstance(context: Context) =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: MySingleton(context).also {
+                INSTANCE ?: RequestQueueSingle(context).also {
                     INSTANCE = it
                 }
             }
     }
+
     val imageLoader: ImageLoader by lazy {
         ImageLoader(requestQueue,
             object : ImageLoader.ImageCache {
@@ -32,12 +33,9 @@ class MySingleton constructor(context: Context) {
                 }
             })
     }
+
     val requestQueue: RequestQueue by lazy {
-        // applicationContext is key, it keeps you from leaking the
-        // Activity or BroadcastReceiver if someone passes one in.
         Volley.newRequestQueue(context.applicationContext)
     }
-    fun <T> addToRequestQueue(req: Request<T>) {
-        requestQueue.add(req)
-    }
+
 }

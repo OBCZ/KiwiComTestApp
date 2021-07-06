@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.baarton.kiwicomtestapp.R
+import com.baarton.kiwicomtestapp.data.Flight
 
 
 class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
