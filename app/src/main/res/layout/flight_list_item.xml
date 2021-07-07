@@ -18,8 +18,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.66"/>
 
-        <!--TODO some images-->
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/flight_item_img"
             android:layout_width="0dp"
             android:layout_height="match_parent"

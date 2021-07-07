@@ -26,7 +26,7 @@ object ResponseParser {
             logger.log(Level.WARNING, "Parsed response is null. Response was:\n$response")
             emptyList()
         } else {
-            flightData.list!!.take(5)
+            flightData.list!!
         }
 
     }

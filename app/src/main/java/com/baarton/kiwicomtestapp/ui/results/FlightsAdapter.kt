@@ -8,8 +8,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.toolbox.NetworkImageView
 import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
+import com.baarton.kiwicomtestapp.request.RequestHelper
 
 
 class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
@@ -25,6 +27,8 @@ class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val flight: Flight = flights[position]
+        holder.flightImg.setDefaultImageResId(R.drawable.ic_launcher_background)
+        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/london_gb.jpg", RequestHelper.getImageLoader()) //TODO ted uz jen dynamicky obrazek pro vsechny itemy
         holder.flightFromView.text = flight.flyFrom
         holder.flightToView.text = flight.flyTo
         holder.flightDurationView.text = flight.duration
@@ -43,11 +47,12 @@ class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAd
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var flightFromView: TextView = itemView.findViewById<View>(R.id.flight_item_from) as TextView
-        var flightToView: TextView = itemView.findViewById<View>(R.id.flight_item_to) as TextView
-        var flightDurationView: TextView = itemView.findViewById<View>(R.id.flight_item_duration) as TextView
-        var flightPriceView: TextView = itemView.findViewById<View>(R.id.flight_item_price) as TextView
-        var cardView: CardView = itemView.findViewById<View>(R.id.fight_item_card) as CardView
+        var flightImg: NetworkImageView = itemView.findViewById(R.id.flight_item_img)
+        var flightFromView: TextView = itemView.findViewById(R.id.flight_item_from)
+        var flightToView: TextView = itemView.findViewById(R.id.flight_item_to)
+        var flightDurationView: TextView = itemView.findViewById(R.id.flight_item_duration)
+        var flightPriceView: TextView = itemView.findViewById(R.id.flight_item_price)
+        var cardView: CardView = itemView.findViewById(R.id.fight_item_card)
     }
 
 }

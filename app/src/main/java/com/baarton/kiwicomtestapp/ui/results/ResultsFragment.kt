@@ -33,6 +33,7 @@ class ResultsFragment : Fragment() {
     companion object {
         fun newInstance() = ResultsFragment()
 
+        private const val MAX_ITEM_COUNT = 5
         private val logger = Logger.getLogger(ResultsFragment::class.java.name)
     }
 
@@ -125,7 +126,7 @@ class ResultsFragment : Fragment() {
         RequestHelper.queueRequest(
             { response ->
                 logger.log(Level.INFO, "Got response with length of ${response.length} characters.")
-                val result = ResponseParser.parse(response)
+                val result = ResponseParser.parse(response).take(MAX_ITEM_COUNT)
                 logger.log(Level.INFO, "Response parsed.")
                 refreshAdapterData(result)
 
