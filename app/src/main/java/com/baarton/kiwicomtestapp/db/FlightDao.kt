@@ -5,8 +5,8 @@ import androidx.room.*
 @Dao
 interface FlightDao {
     //TODO cleanup
-/*    @Query("SELECT * FROM flights-of-the-day")
-    fun getAll(): List<Flight>*/
+    @Query("SELECT * FROM flights")
+    suspend fun getAll(): List<Flight>
 
 /*    @Query("SELECT * FROM flights-of-the-day WHERE uid IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<Flight>

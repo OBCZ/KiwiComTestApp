@@ -2,6 +2,7 @@ package com.baarton.kiwicomtestapp.data
 
 import com.google.gson.annotations.SerializedName
 
+//TODO try to merge it with th db data class
 data class Flight(
     @SerializedName("id")
     internal val flightId: String,

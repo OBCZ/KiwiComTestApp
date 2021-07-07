@@ -42,7 +42,7 @@ object RequestHelper {
 
     fun cancel() {
         queue?.cancelAll(REQUEST_TAG)
-        logger.log(Level.INFO, "Request cancelled: $REQUEST_TAG.")
+        logger.log(Level.INFO, "Cancelling request with tag (if queued): $REQUEST_TAG.")
     }
 
 }
