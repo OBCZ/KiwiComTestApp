@@ -3,6 +3,7 @@ package com.baarton.kiwicomtestapp.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.baarton.kiwicomtestapp.data.RouteElem
 
 @Entity(tableName = "flights")
 data class Flight (
@@ -25,7 +26,9 @@ data class Flight (
     @ColumnInfo(name = "cityTo")
     val cityTo: String,
     @ColumnInfo(name = "price")
-    val price: String
+    val price: String,
+    @ColumnInfo(name = "route")
+    val routeList: List<RouteElem>
 )
 
 fun toDb(flight: com.baarton.kiwicomtestapp.data.Flight): Flight {
@@ -38,7 +41,8 @@ fun toDb(flight: com.baarton.kiwicomtestapp.data.Flight): Flight {
         cityFrom = flight.cityFrom,
         flyTo = flight.flyTo,
         cityTo = flight.cityTo,
-        price = flight.price
+        price = flight.price,
+        routeList = flight.routeList
     )
 }
 
@@ -52,6 +56,7 @@ fun fromDb(flight: Flight): com.baarton.kiwicomtestapp.data.Flight {
         cityFrom = flight.cityFrom,
         flyTo = flight.flyTo,
         cityTo = flight.cityTo,
-        price = flight.price
+        price = flight.price,
+        routeList = flight.routeList
     )
 }

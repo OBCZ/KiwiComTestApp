@@ -2,7 +2,7 @@ package com.baarton.kiwicomtestapp.data
 
 import com.google.gson.annotations.SerializedName
 
-//TODO try to merge it with th db data class
+//TODO try to merge it with th db data class and get rid of the pseudo converters in the "DB" Flight class
 data class Flight(
     @SerializedName("id")
     internal val flightId: String,
@@ -21,5 +21,12 @@ data class Flight(
     @SerializedName("cityTo")
     internal val cityTo: String,
     @SerializedName("price")
-    internal val price: String
+    internal val price: String,
+    @SerializedName("route")
+    internal val routeList: List<RouteElem>
+)
+
+data class RouteElem(
+    @SerializedName("mapIdto")
+    internal val mapIdTo: String
 )

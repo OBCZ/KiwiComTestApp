@@ -28,7 +28,8 @@ class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAd
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val flight: Flight = flights[position]
         holder.flightImg.setDefaultImageResId(R.drawable.ic_launcher_background)
-        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/london_gb.jpg", RequestHelper.getImageLoader()) //TODO ted uz jen dynamicky obrazek pro vsechny itemy
+        val finalDestination = flight.routeList.last().mapIdTo
+        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/$finalDestination.jpg", RequestHelper.getImageLoader())
         holder.flightFromView.text = flight.flyFrom
         holder.flightToView.text = flight.flyTo
         holder.flightDurationView.text = flight.duration

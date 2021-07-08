@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 
-@Database(entities = [Flight::class], version = 1)
+@Database(entities = [Flight::class], version = 2)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
@@ -23,7 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
                         context.applicationContext,
                         AppDatabase::class.java,
                         "flights"
-                    ).build()
+                    ).fallbackToDestructiveMigration().build() // NOTE: destructive migration is nothing we want in production
                     INSTANCE = instance
                 }
                 return instance
