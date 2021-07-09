@@ -31,7 +31,7 @@ class App : Application() {
                         "flights"
                     ).fallbackToDestructiveMigration().build() // NOTE: destructive migration is nothing we want in production
                 }
-                viewModel { ResultsViewModel() }
+                viewModel { parameters -> ResultsViewModel(parameters.get()) }
             }
             modules(appModule)
         }

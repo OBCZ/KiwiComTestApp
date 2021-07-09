@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.baarton.kiwicomtestapp.ui.StartFragment
 
 //TODO don't forget:
-// > utilize VM more
 // > extractions - refactoring - deleting stuff where possible
 // > layout refresh, cleanup + styles extractions
 // > tests
