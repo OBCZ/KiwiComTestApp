@@ -15,8 +15,6 @@ import com.android.volley.VolleyError
 import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
 import com.baarton.kiwicomtestapp.db.AppDatabase
-import com.baarton.kiwicomtestapp.db.fromDb
-import com.baarton.kiwicomtestapp.db.toDb
 import com.baarton.kiwicomtestapp.network.RequestService
 import com.baarton.kiwicomtestapp.network.ResponseService
 import com.baarton.kiwicomtestapp.ui.StartFragment
@@ -86,7 +84,7 @@ class ResultsFragment : Fragment() {
     private fun loadData() {
         setLoadingInfo()
 
-        var dbFlights: List<com.baarton.kiwicomtestapp.db.Flight>? = null
+        var dbFlights: List<Flight>? = null
         val readDbJob = lifecycleScope.launch {
             logger.log(Level.INFO, "Querying data from the DB: START")
             dbFlights = databaseModule.flightDao().getAll()
@@ -100,7 +98,7 @@ class ResultsFragment : Fragment() {
                 // > check last saved date from shared prefs
                 //   > if new day, save the db data to a variable [DONE], nuke DB, and request new data, minus queried data, and take 5
                 //   > if same day use DB data
-                refreshAdapterData(dbFlights!!.map { dbFlight -> fromDb(dbFlight) })
+                refreshAdapterData(dbFlights!!)
             } else {
                 requestData()
             }
@@ -125,9 +123,7 @@ class ResultsFragment : Fragment() {
 
                  lifecycleScope.launch {
                      logger.log(Level.INFO, "Inserting data to the DB: START")
-                     databaseModule.flightDao().insertAll(*result.map {
-                         flight: Flight -> toDb(flight)
-                     }.toTypedArray())
+                     databaseModule.flightDao().insertAll(*result.toTypedArray())
                      logger.log(Level.INFO, "Inserting data to the DB: DONE")
                  }
 

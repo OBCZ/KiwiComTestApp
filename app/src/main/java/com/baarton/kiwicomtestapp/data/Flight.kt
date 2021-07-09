@@ -1,29 +1,44 @@
 package com.baarton.kiwicomtestapp.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-//TODO try to merge it with th db data class and get rid of the pseudo converters in the "DB" Flight class
+@Entity(tableName = "flights")
 data class Flight(
+    @PrimaryKey
+    val dbId: Int? = null,
+    @ColumnInfo(name = "flightId")
     @SerializedName("id")
-    internal val flightId: String,
+    val flightId: String,
+    @ColumnInfo(name = "dTime")
     @SerializedName("dTime")
-    internal val departureTime: String,
+    val departureTime: String,
+    @ColumnInfo(name = "aTime")
     @SerializedName("aTime")
-    internal val arrivalTime: String,
+    val arrivalTime: String,
+    @ColumnInfo(name = "fly_duration")
     @SerializedName("fly_duration")
-    internal val duration: String,
+    val duration: String,
+    @ColumnInfo(name = "flyFrom")
     @SerializedName("flyFrom")
-    internal val flyFrom: String,
+    val flyFrom: String,
+    @ColumnInfo(name = "cityFrom")
     @SerializedName("cityFrom")
-    internal val cityFrom: String,
+    val cityFrom: String,
+    @ColumnInfo(name = "flyTo")
     @SerializedName("flyTo")
-    internal val flyTo: String,
+    val flyTo: String,
+    @ColumnInfo(name = "cityTo")
     @SerializedName("cityTo")
-    internal val cityTo: String,
+    val cityTo: String,
+    @ColumnInfo(name = "price")
     @SerializedName("price")
-    internal val price: String,
+    val price: String,
     @SerializedName("route")
-    internal val routeList: List<RouteElem>
+    @ColumnInfo(name = "route")
+    val routeList: List<RouteElem>
 )
 
 data class RouteElem(
