@@ -8,7 +8,9 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "flights")
 data class Flight(
     @PrimaryKey
-    val dbId: Int? = null,
+    var dbId: Int? = null,
+    @ColumnInfo(name = "dbDate")
+    var dbDate: String? = null,
     @ColumnInfo(name = "flightId")
     @SerializedName("id")
     val flightId: String,

@@ -3,6 +3,7 @@ package com.baarton.kiwicomtestapp.db
 import androidx.room.*
 import com.baarton.kiwicomtestapp.data.Flight
 
+
 @Dao
 interface FlightDao {
 

@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException
 import java.util.logging.Level
 import java.util.logging.Logger
 
+
 class ResponseService {
 
     private val logger = Logger.getLogger(ResponseService::class.java.name)
