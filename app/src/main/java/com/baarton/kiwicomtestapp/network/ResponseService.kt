@@ -1,4 +1,4 @@
-package com.baarton.kiwicomtestapp.response
+package com.baarton.kiwicomtestapp.network
 
 import com.baarton.kiwicomtestapp.data.Flight
 import com.baarton.kiwicomtestapp.data.FlightData
@@ -7,14 +7,12 @@ import com.google.gson.JsonSyntaxException
 import java.util.logging.Level
 import java.util.logging.Logger
 
-object ResponseParser {
+class ResponseService {
 
-    private val logger = Logger.getLogger(ResponseParser::class.java.name)
+    private val logger = Logger.getLogger(ResponseService::class.java.name)
 
     fun parse(response: String): List<Flight> {
-
         val flightData: FlightData?
-
         try {
             flightData = Gson().fromJson(response, FlightData::class.java)
         } catch (e: JsonSyntaxException) {
@@ -28,7 +26,6 @@ object ResponseParser {
         } else {
             flightData.list!!
         }
-
     }
     
 }

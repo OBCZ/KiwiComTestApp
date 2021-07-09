@@ -8,13 +8,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.NetworkImageView
 import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
-import com.baarton.kiwicomtestapp.request.RequestHelper
 
 
-class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
+class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLoader) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
     private var context: Context? = null
 
@@ -29,7 +29,7 @@ class FlightsAdapter(var flights: List<Flight>) : RecyclerView.Adapter<FlightsAd
         val flight: Flight = flights[position]
         holder.flightImg.setDefaultImageResId(R.drawable.ic_launcher_background)
         val finalDestination = flight.routeList.last().mapIdTo
-        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/$finalDestination.jpg", RequestHelper.getImageLoader())
+        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/$finalDestination.jpg", imageLoader)
         holder.flightFromView.text = flight.flyFrom
         holder.flightToView.text = flight.flyTo
         holder.flightDurationView.text = flight.duration

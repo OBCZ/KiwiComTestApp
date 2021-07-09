@@ -5,13 +5,12 @@ import android.os.Bundle
 import com.baarton.kiwicomtestapp.ui.StartFragment
 
 //TODO don't forget:
-// > tests
+// > utilize VM more
 // > extractions - refactoring - deleting stuff where possible
-// > annotations? UiThread?
-// > exceptions handling and logging at least
 // > layout refresh, cleanup + styles extractions
+// > tests
+// > exceptions handling and logging at least - check that everywhere
 // > permission checks? network connectivity?
-// > let db be asynchronous
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

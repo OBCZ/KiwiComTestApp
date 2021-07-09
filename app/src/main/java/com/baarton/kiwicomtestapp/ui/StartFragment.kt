@@ -11,6 +11,7 @@ import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.db.AppDatabase
 import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 
 
 class StartFragment : Fragment() {
@@ -18,6 +19,8 @@ class StartFragment : Fragment() {
     companion object {
         fun newInstance() = StartFragment()
     }
+
+    private val databaseModule: AppDatabase by inject()
 
     private lateinit var btnStart: Button
     private lateinit var btnNuke: Button
@@ -40,7 +43,7 @@ class StartFragment : Fragment() {
         btnNuke = view.findViewById(R.id.btn_nuke)
         btnNuke.setOnClickListener {
             lifecycleScope.launch {
-                AppDatabase.getInstance(requireContext()).flightDao().nuke()
+                databaseModule.flightDao().nuke()
             }
         }
     }
