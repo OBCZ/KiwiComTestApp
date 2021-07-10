@@ -45,20 +45,22 @@ class StartFragment : Fragment() {
         btnStart.setOnClickListener { start() }
 
         btnNuke = view.findViewById(R.id.btn_nuke)
-        btnNuke.setOnClickListener {
-            lifecycleScope.launch {
-                logger.log(Level.INFO, "Nuking the DB: START")
-                databaseModule.flightDao().nuke()
-                logger.log(Level.INFO, "Nuking the DB: END")
-                Toast.makeText(context, getString(R.string.text_start_flights_cleared), Toast.LENGTH_SHORT).show()
-            }
-        }
+        btnNuke.setOnClickListener { nukeDb() }
     }
 
     private fun start() {
         parentFragmentManager.beginTransaction()
             .replace(R.id.container, ResultsFragment.newInstance())
             .commitNow()
+    }
+
+    private fun nukeDb() {
+        lifecycleScope.launch {
+            logger.log(Level.INFO, "Nuking the DB: START")
+            databaseModule.flightDao().nuke()
+            logger.log(Level.INFO, "Nuking the DB: END")
+            Toast.makeText(context, getString(R.string.text_start_flights_cleared), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

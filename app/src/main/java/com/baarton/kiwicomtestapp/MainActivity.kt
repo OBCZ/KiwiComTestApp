@@ -5,9 +5,6 @@ import android.os.Bundle
 import com.baarton.kiwicomtestapp.ui.StartFragment
 
 
-//TODO don't forget:
-// > tests?
-// > permission checks? network connectivity?
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

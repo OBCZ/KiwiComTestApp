@@ -18,6 +18,10 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        startKoin()
+    }
+
+    private fun startKoin() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
