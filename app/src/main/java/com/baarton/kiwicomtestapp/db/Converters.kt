@@ -3,7 +3,7 @@ package com.baarton.kiwicomtestapp.db
 import androidx.room.TypeConverter
 import com.baarton.kiwicomtestapp.data.RouteElem
 
-
+//TODO test candidates
 class Converters {
 
     @TypeConverter

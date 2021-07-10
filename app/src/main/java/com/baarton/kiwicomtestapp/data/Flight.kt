@@ -38,6 +38,8 @@ data class Flight(
     @ColumnInfo(name = "price")
     @SerializedName("price")
     val price: String,
+    @ColumnInfo(name = "currency")
+    var currency: String? = null,
     @SerializedName("route")
     @ColumnInfo(name = "route")
     val routeList: List<RouteElem>

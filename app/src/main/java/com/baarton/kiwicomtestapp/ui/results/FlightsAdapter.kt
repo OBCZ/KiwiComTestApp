@@ -16,6 +16,10 @@ import com.baarton.kiwicomtestapp.data.Flight
 
 class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLoader) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
+    companion object {
+        private const val IMAGE_REQUEST_URL = "https://images.kiwi.com/photos/600x330/%s.jpg"
+    }
+
     private var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,15 +33,15 @@ class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLo
         val flight: Flight = flights[position]
         holder.flightImg.setDefaultImageResId(R.drawable.ic_launcher_background)
         val finalDestination = flight.routeList.last().mapIdTo
-        holder.flightImg.setImageUrl("https://images.kiwi.com/photos/600x330/$finalDestination.jpg", imageLoader)
+        holder.flightImg.setImageUrl(String.format(IMAGE_REQUEST_URL, finalDestination), imageLoader)
         holder.flightFromView.text = flight.flyFrom
         holder.flightToView.text = flight.flyTo
         holder.flightDurationView.text = flight.duration
-        holder.flightPriceView.text = flight.price
+        holder.flightPriceView.text = context!!.getString(R.string.card_flight_price_text, flight.price, flight.currency)
         holder.cardView.setOnClickListener {//TODO item detail fragment/animation?
             Toast.makeText(
                 context,
-                "The position is:$position",
+                "The position is: $position",
                 Toast.LENGTH_SHORT
             ).show()
         }

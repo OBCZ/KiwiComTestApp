@@ -69,6 +69,7 @@ class ResultsFragment : Fragment() {
 
     private fun observeLiveData() {
         resultsViewModel.overviewText.observe(viewLifecycleOwner, { newText -> overviewTextView.text = newText })
+        resultsViewModel.overviewTextVisibility.observe(viewLifecycleOwner, { newVisibility -> infoTextView.visibility = newVisibility })
         resultsViewModel.infoText.observe(viewLifecycleOwner, { newText -> infoTextView.text = newText })
         resultsViewModel.infoTextVisibility.observe(viewLifecycleOwner, { newVisibility -> infoTextView.visibility = newVisibility })
         resultsViewModel.progressBarVisibility.observe(viewLifecycleOwner, { newVisibility -> progressBar.visibility = newVisibility })

@@ -1,5 +1,18 @@
 <resources>
-    <string name="app_name">KiwiComTestApp</string>
-    <string name="button_start">Show me some flights for today!</string>
+
+    <string name="app_name">KiwiCom Test App</string>
+
+    <string name="text_start">Hello fellow traveler! Let\'s check some popular flights for today shall we? You can start by clicking \"Show me!\".\nIf you click on \"Clear\", you will clear the locally stored flights and then you can start all over again.</string>
+    <string name="button_start">Show me!</string>
+    <string name="button_clear">Clear</string>
+    <string name="text_start_flights_cleared">DB cleared.</string>
+
+    <string name="text_results_heading">Showing %d most popular destinations for today</string>
+    <string name="text_results_error">Got an error while fetching the data. I can\'t display anything, sorry.</string>
+    <string name="text_results_nothing">NO RESULTS</string>
+
     <string name="button_back">Go back</string>
+
+    <string name="card_flight_price_text">%1$s\u00A0%2$s</string>
+
 </resources>

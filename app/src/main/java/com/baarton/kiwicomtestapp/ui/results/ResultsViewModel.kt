@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
+import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
 import com.baarton.kiwicomtestapp.db.AppDatabase
 import com.baarton.kiwicomtestapp.network.RequestService
@@ -34,6 +35,7 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
     internal val infoText = MutableLiveData<String>()
     internal val overviewText = MutableLiveData<String>()
     internal val infoTextVisibility = MutableLiveData<Int>()
+    internal val overviewTextVisibility = MutableLiveData<Int>()
     internal val progressBarVisibility = MutableLiveData<Int>()
     internal val flightListData = MutableLiveData<List<Flight>>()
 
@@ -44,14 +46,16 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
     private var flights: List<Flight> = listOf()
 
     init {
-        overviewText.value = "NO RESULTS"
-        infoText.value = "NO DATA LOADED"
+        overviewText.value = ""
+        overviewTextVisibility.value = View.GONE
+        infoText.value = fragment.getString(R.string.text_results_nothing)
         infoTextVisibility.value = View.VISIBLE
         progressBarVisibility.value = View.GONE
 
         loadData()
     }
 
+    //TODO test candidate
     private fun loadData() {
         setLoadingInfo()
 
@@ -88,17 +92,24 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
                 logger.log(Level.INFO, "Got response with length of ${response.length} characters.")
 
                 val oldFlightIds = flights.map { it.flightId }
-                val responseFlights = responseService.parse(response)
+                val responseFlightData = responseService.parse(response)
+                val responseFlights = responseFlightData.list
+                val responseCurrency = responseFlightData.currency
 
                 flights = responseFlights.filter { !oldFlightIds.contains(it.flightId) }.take(MAX_ITEM_COUNT)
                 logger.log(Level.INFO, "Response parsed.")
+
+                flights.onEach {
+                    it.dbDate = LocalDate.now().format(DATE_FORMAT)
+                    it.currency = responseCurrency
+                }
 
                 flightListData.value = flights
                 setLoadingComplete()
 
                 fragment.lifecycleScope.launch {
                     logger.log(Level.INFO, "Inserting data to the DB: START")
-                    databaseModule.flightDao().insertAll(*flights.onEach { it.dbDate = LocalDate.now().format(DATE_FORMAT) }.toTypedArray())
+                    databaseModule.flightDao().insertAll(*flights.toTypedArray())
                     logger.log(Level.INFO, "Inserting data to the DB: DONE")
                 }
             },
@@ -118,18 +129,29 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
 
     private fun setLoadingError(error: VolleyError) {
         progressBarVisibility.value = View.GONE
+        overviewTextVisibility.value = View.GONE
         infoTextVisibility.value = View.VISIBLE
-        infoText.value = "That didn't work!\nError:\n${error.message}"
+        infoText.value = fragment.getString(R.string.text_results_error)
+        logger.log(Level.SEVERE, "Got an error on the data request: ${error.message}")
     }
 
     private fun setLoadingComplete() {
         progressBarVisibility.value = View.GONE
-        infoTextVisibility.value = View.GONE
-        overviewText.value = "Showing ${flights.size} most popular destinations for today"
+        if (flights.isNotEmpty()) {
+            overviewTextVisibility.value = View.VISIBLE
+            overviewText.value = fragment.getString(R.string.text_results_heading, flights.size)
+            infoTextVisibility.value = View.GONE
+        } else {
+            overviewTextVisibility.value = View.GONE
+            overviewText.value = ""
+            infoTextVisibility.value = View.VISIBLE
+            infoText.value = fragment.getString(R.string.text_results_nothing)
+        }
     }
 
     private fun setLoadingInfo() {
         progressBarVisibility.value = View.VISIBLE
+        overviewTextVisibility.value = View.GONE
         infoTextVisibility.value = View.GONE
     }
 

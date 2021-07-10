@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.baarton.kiwicomtestapp.R
@@ -39,11 +40,11 @@ class StartFragment : Fragment() {
         btnStart = view.findViewById(R.id.btn_start)
         btnStart.setOnClickListener { start() }
 
-        //TODO remove after tests
         btnNuke = view.findViewById(R.id.btn_nuke)
         btnNuke.setOnClickListener {
             lifecycleScope.launch {
                 databaseModule.flightDao().nuke()
+                Toast.makeText(context, getString(R.string.text_start_flights_cleared), Toast.LENGTH_SHORT).show()
             }
         }
     }

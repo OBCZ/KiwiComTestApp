@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_margin_default">8dp</dimen>
+    <dimen name="item_padding_default">4dp</dimen>
+    <dimen name="item_padding_button">12dp</dimen>
+    <dimen name="stroke_width_default">0.5dp</dimen>
+
+</resources>

@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.baarton.kiwicomtestapp.data.Flight
 
 
-@Database(entities = [Flight::class], version = 4)
+@Database(entities = [Flight::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

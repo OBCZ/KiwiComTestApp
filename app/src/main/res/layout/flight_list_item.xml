@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fight_item_card">
+    android:id="@+id/fight_item_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/item_margin_default"
+    app:strokeWidth="@dimen/stroke_width_default"
+    app:strokeColor="@color/purple_300"
+    app:cardElevation="@dimen/cardview_default_elevation"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    android:backgroundTint="@color/purple_100">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,11 +19,11 @@
         android:orientation="horizontal">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/flight_item_guideline_vertical_75"
+            android:id="@+id/flight_item_guideline_vertical_60"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.66"/>
+            app:layout_constraintGuide_percent="0.6"/>
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/flight_item_img"
@@ -25,15 +32,17 @@
             app:layout_constraintStart_toStartOf="parent"
             android:src="@drawable/ic_launcher_background"
             android:scaleType="fitXY"
-            app:layout_constraintEnd_toStartOf="@id/flight_item_guideline_vertical_75" />
+            app:layout_constraintEnd_toStartOf="@id/flight_item_guideline_vertical_60" />
 
         <TextView
             android:id="@+id/flight_item_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="@dimen/item_padding_default"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_75"
+            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_60"
             app:layout_constraintEnd_toStartOf="@id/flight_item_from_to_img"
             app:layout_constraintBottom_toTopOf="@id/flight_item_duration"
             tools:text="PRG"/>
@@ -54,6 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="@dimen/item_padding_default"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/flight_item_from_to_img"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,23 +76,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="@dimen/item_padding_default"
+            android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintTop_toBottomOf="@id/flight_item_from"
-            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_75"
+            app:layout_constraintStart_toEndOf="@id/flight_item_guideline_vertical_60"
             app:layout_constraintEnd_toStartOf="@id/flight_item_price"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="2h 55m"/>
+            tools:text="12h 55m"/>
 
         <TextView
             android:id="@+id/flight_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="@dimen/item_padding_default"
+            android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintTop_toBottomOf="@id/flight_item_to"
             app:layout_constraintStart_toEndOf="@id/flight_item_duration"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="505"/>
+            tools:text="155 EUR"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
