@@ -6,9 +6,7 @@ import com.baarton.kiwicomtestapp.ui.StartFragment
 
 
 //TODO don't forget:
-// > layout refresh, cleanup + styles extractions
 // > tests?
-// > exceptions handling, corner cases (?) and logging at least - check that everywhere
 // > permission checks? network connectivity?
 class MainActivity : AppCompatActivity() {
 

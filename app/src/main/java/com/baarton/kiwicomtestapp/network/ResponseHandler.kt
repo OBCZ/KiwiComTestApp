@@ -7,9 +7,9 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 
-class ResponseService {
+class ResponseHandler {
 
-    private val logger = Logger.getLogger(ResponseService::class.java.name)
+    private val logger = Logger.getLogger(ResponseHandler::class.java.name)
 
     fun parse(response: String): FlightData {
         val flightData: FlightData?

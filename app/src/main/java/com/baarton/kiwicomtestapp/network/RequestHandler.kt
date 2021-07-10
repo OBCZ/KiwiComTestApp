@@ -11,10 +11,10 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 
-class RequestService(context: Context) {
+class RequestHandler(context: Context) {
 
     companion object {
-        private val logger = Logger.getLogger(RequestService::class.java.name)
+        private val logger = Logger.getLogger(RequestHandler::class.java.name)
     }
 
     private val requestQueue: RequestQueue by lazy {
@@ -47,7 +47,7 @@ class RequestService(context: Context) {
         logger.log(Level.INFO, "Request queued: ${request.tag}.")
     }
 
-    fun cancel() {
+    fun cancelQueue() {
         requestQueue.cancelAll { true }
         logger.log(Level.INFO, "Cancelling all queued requests.")
     }

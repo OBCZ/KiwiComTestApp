@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
-import com.baarton.kiwicomtestapp.network.RequestService
+import com.baarton.kiwicomtestapp.network.RequestHandler
 import com.baarton.kiwicomtestapp.ui.StartFragment
 import com.google.android.material.button.MaterialButton
 import org.koin.android.ext.android.inject
@@ -31,7 +31,7 @@ class ResultsFragment : Fragment() {
         fun newInstance() = ResultsFragment()
     }
 
-    private val requestService: RequestService by inject()
+    private val requestHandler: RequestHandler by inject()
     private val resultsViewModel: ResultsViewModel by viewModel { parametersOf(this) }
 
     private lateinit var overviewTextView: TextView
@@ -39,7 +39,7 @@ class ResultsFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var flightsList: RecyclerView
     private lateinit var btnBack: MaterialButton
-    private val flightsAdapter: FlightsAdapter = FlightsAdapter(listOf(), requestService.imageLoader)
+    private val flightsAdapter: FlightsAdapter = FlightsAdapter(listOf(), requestHandler.imageLoader)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.results_fragment, container, false)
@@ -78,7 +78,7 @@ class ResultsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        requestService.cancel()
+        requestHandler.cancelQueue()
     }
 
     inner class FlightListObserver : Observer<List<Flight>> {

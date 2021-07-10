@@ -10,8 +10,8 @@ import com.android.volley.toolbox.StringRequest
 import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
 import com.baarton.kiwicomtestapp.db.AppDatabase
-import com.baarton.kiwicomtestapp.network.RequestService
-import com.baarton.kiwicomtestapp.network.ResponseService
+import com.baarton.kiwicomtestapp.network.RequestHandler
+import com.baarton.kiwicomtestapp.network.ResponseHandler
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
@@ -40,8 +40,8 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
     internal val flightListData = MutableLiveData<List<Flight>>()
 
     private val databaseModule: AppDatabase by fragment.inject()
-    private val requestService: RequestService by fragment.inject()
-    private val responseService: ResponseService by fragment.inject()
+    private val requestHandler: RequestHandler by fragment.inject()
+    private val responseHandler: ResponseHandler by fragment.inject()
 
     private var flights: List<Flight> = listOf()
 
@@ -66,19 +66,24 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
         }
 
         readDbJob.invokeOnCompletion {
-            logger.log(Level.INFO, "DB data collection check. DB returned collection of size ${flights.size}")
+            logger.log(Level.INFO, "DB data collection check. DB returned collection of size ${flights.size}.")
             if (flights.isNotEmpty()) {
                 if (flights[0].dbDate == LocalDate.now().format(DATE_FORMAT)) {
+                    logger.log(Level.INFO, "DB data will be displayed.")
                     flightListData.value = flights
                     setLoadingComplete()
                 } else {
+                    logger.log(Level.INFO, "New data will be requested.")
                     fragment.lifecycleScope.launch {
+                        logger.log(Level.INFO, "Nuking the DB: START")
                         databaseModule.flightDao().nuke()
+                        logger.log(Level.INFO, "Nuking the DB: END")
                     }.invokeOnCompletion {
                         requestData()
                     }
                 }
             } else {
+                logger.log(Level.INFO, "New data will be requested.")
                 requestData()
             }
         }
@@ -92,7 +97,7 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
                 logger.log(Level.INFO, "Got response with length of ${response.length} characters.")
 
                 val oldFlightIds = flights.map { it.flightId }
-                val responseFlightData = responseService.parse(response)
+                val responseFlightData = responseHandler.parse(response)
                 val responseFlights = responseFlightData.list
                 val responseCurrency = responseFlightData.currency
 
@@ -118,7 +123,7 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
             }
         )
         stringRequest.tag = DATA_REQUEST_TAG
-        requestService.queueRequest(stringRequest)
+        requestHandler.queueRequest(stringRequest)
     }
 
     private fun constructQueryUrl(): String {

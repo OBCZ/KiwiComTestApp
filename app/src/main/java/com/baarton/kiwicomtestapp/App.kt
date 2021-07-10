@@ -3,8 +3,8 @@ package com.baarton.kiwicomtestapp
 import android.app.Application
 import androidx.room.Room
 import com.baarton.kiwicomtestapp.db.AppDatabase
-import com.baarton.kiwicomtestapp.network.RequestService
-import com.baarton.kiwicomtestapp.network.ResponseService
+import com.baarton.kiwicomtestapp.network.RequestHandler
+import com.baarton.kiwicomtestapp.network.ResponseHandler
 import com.baarton.kiwicomtestapp.ui.results.ResultsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -22,8 +22,8 @@ class App : Application() {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
             val appModule = module {
-                single { RequestService(get()) }
-                single { ResponseService() }
+                single { RequestHandler(get()) }
+                single { ResponseHandler() }
                 single {
                     Room.databaseBuilder(
                         this@App,

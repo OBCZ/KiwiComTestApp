@@ -13,11 +13,15 @@ import com.baarton.kiwicomtestapp.db.AppDatabase
 import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
+import java.util.logging.Level
+import java.util.logging.Logger
 
 
 class StartFragment : Fragment() {
 
     companion object {
+        private val logger = Logger.getLogger(StartFragment::class.java.name)
+
         fun newInstance() = StartFragment()
     }
 
@@ -43,7 +47,9 @@ class StartFragment : Fragment() {
         btnNuke = view.findViewById(R.id.btn_nuke)
         btnNuke.setOnClickListener {
             lifecycleScope.launch {
+                logger.log(Level.INFO, "Nuking the DB: START")
                 databaseModule.flightDao().nuke()
+                logger.log(Level.INFO, "Nuking the DB: END")
                 Toast.makeText(context, getString(R.string.text_start_flights_cleared), Toast.LENGTH_SHORT).show()
             }
         }
