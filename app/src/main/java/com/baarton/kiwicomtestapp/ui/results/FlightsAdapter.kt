@@ -14,7 +14,7 @@ import com.baarton.kiwicomtestapp.R
 import com.baarton.kiwicomtestapp.data.Flight
 
 
-class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLoader) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
+class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLoader?) : RecyclerView.Adapter<FlightsAdapter.ViewHolder>() {
 
     companion object {
         private const val IMAGE_REQUEST_URL = "https://images.kiwi.com/photos/600x330/%s.jpg"
@@ -33,7 +33,9 @@ class FlightsAdapter(var flights: List<Flight>, private val imageLoader: ImageLo
         val flight: Flight = flights[position]
         holder.flightImg.setDefaultImageResId(R.drawable.ic_launcher_background)
         val finalDestination = flight.routeList.last().mapIdTo
-        holder.flightImg.setImageUrl(String.format(IMAGE_REQUEST_URL, finalDestination), imageLoader)
+        if (imageLoader != null) {
+            holder.flightImg.setImageUrl(String.format(IMAGE_REQUEST_URL, finalDestination), imageLoader)
+        }
         holder.flightFromView.text = flight.flyFrom
         holder.flightToView.text = flight.flyTo
         holder.flightDurationView.text = flight.duration

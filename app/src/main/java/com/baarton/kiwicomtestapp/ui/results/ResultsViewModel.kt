@@ -8,10 +8,10 @@ import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.baarton.kiwicomtestapp.R
+import com.baarton.kiwicomtestapp.app.IDatabaseModule
+import com.baarton.kiwicomtestapp.app.IRequestHandler
+import com.baarton.kiwicomtestapp.app.IResponseHandler
 import com.baarton.kiwicomtestapp.data.Flight
-import com.baarton.kiwicomtestapp.db.AppDatabase
-import com.baarton.kiwicomtestapp.network.RequestHandler
-import com.baarton.kiwicomtestapp.network.ResponseHandler
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.time.LocalDate
@@ -39,9 +39,9 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
     internal val progressBarVisibility = MutableLiveData<Int>()
     internal val flightListData = MutableLiveData<List<Flight>>()
 
-    private val databaseModule: AppDatabase by fragment.inject()
-    private val requestHandler: RequestHandler by fragment.inject()
-    private val responseHandler: ResponseHandler by fragment.inject()
+    private val databaseModule: IDatabaseModule by fragment.inject()
+    private val requestHandler: IRequestHandler by fragment.inject()
+    private val responseHandler: IResponseHandler by fragment.inject()
 
     private var flights: List<Flight> = listOf()
 
@@ -55,13 +55,12 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
         loadData()
     }
 
-    //TODO test candidate
     private fun loadData() {
         setLoadingInfo()
 
         val readDbJob = fragment.lifecycleScope.launch {
             logger.log(Level.INFO, "Querying data from the DB: START")
-            flights = databaseModule.flightDao().getAll()
+            flights = databaseModule.db.flightDao().getAll()
             logger.log(Level.INFO, "Querying data from the DB: DONE")
         }
 
@@ -76,7 +75,7 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
                     logger.log(Level.INFO, "New data will be requested.")
                     fragment.lifecycleScope.launch {
                         logger.log(Level.INFO, "Nuking the DB: START")
-                        databaseModule.flightDao().nuke()
+                        databaseModule.db.flightDao().nuke()
                         logger.log(Level.INFO, "Nuking the DB: END")
                     }.invokeOnCompletion {
                         requestData()
@@ -114,7 +113,7 @@ class ResultsViewModel(private val fragment: ResultsFragment) : ViewModel() {
 
                 fragment.lifecycleScope.launch {
                     logger.log(Level.INFO, "Inserting data to the DB: START")
-                    databaseModule.flightDao().insertAll(*flights.toTypedArray())
+                    databaseModule.db.flightDao().insertAll(*flights.toTypedArray())
                     logger.log(Level.INFO, "Inserting data to the DB: DONE")
                 }
             },

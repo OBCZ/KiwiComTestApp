@@ -7,11 +7,12 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
+import com.baarton.kiwicomtestapp.app.IRequestHandler
 import java.util.logging.Level
 import java.util.logging.Logger
 
 
-class RequestHandler(context: Context) {
+class RequestHandler(context: Context): IRequestHandler {
 
     companion object {
         private val logger = Logger.getLogger(RequestHandler::class.java.name)
@@ -23,7 +24,7 @@ class RequestHandler(context: Context) {
         logger.log(Level.INFO, "Request queue object initialized.")
     }
 
-    val imageLoader: ImageLoader by lazy {
+    override val imageLoader: ImageLoader? by lazy {
         ImageLoader(requestQueue,
             object : ImageLoader.ImageCache {
 
@@ -42,12 +43,12 @@ class RequestHandler(context: Context) {
         logger.log(Level.INFO, "Image loader object initialized.")
     }
 
-    fun queueRequest(request: Request<*>) {
+    override fun queueRequest(request: Request<*>) {
         requestQueue.add(request)
         logger.log(Level.INFO, "Request queued: ${request.tag}.")
     }
 
-    fun cancelQueue() {
+    override fun cancelQueue() {
         requestQueue.cancelAll { true }
         logger.log(Level.INFO, "Cancelling all queued requests.")
     }

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baarton.kiwicomtestapp.R
+import com.baarton.kiwicomtestapp.app.IRequestHandler
 import com.baarton.kiwicomtestapp.data.Flight
-import com.baarton.kiwicomtestapp.network.RequestHandler
 import com.baarton.kiwicomtestapp.ui.StartFragment
 import com.google.android.material.button.MaterialButton
 import org.koin.android.ext.android.inject
@@ -31,7 +31,7 @@ class ResultsFragment : Fragment() {
         fun newInstance() = ResultsFragment()
     }
 
-    private val requestHandler: RequestHandler by inject()
+    private val requestHandler: IRequestHandler by inject()
     private val resultsViewModel: ResultsViewModel by viewModel { parametersOf(this) }
 
     private lateinit var overviewTextView: TextView

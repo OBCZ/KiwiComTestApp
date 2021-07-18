@@ -1,17 +1,38 @@
 package com.baarton.kiwicomtestapp
 
+import android.os.Build
+import androidx.fragment.app.testing.launchFragment
+import androidx.fragment.app.testing.withFragment
+import com.baarton.kiwicomtestapp.app.TestApp
+import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
+import com.baarton.kiwicomtestapp.ui.results.ResultsViewModel
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.KoinTest
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-import org.junit.Assert.*
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
+@Config(application = TestApp::class, sdk = [Build.VERSION_CODES.P])
+@RunWith(RobolectricTestRunner::class)
+class ExampleUnitTest : KoinTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun initViewModelTest() {
+
+        val fr = launchFragment {
+            ResultsFragment.newInstance()
+        }
+
+        fr.withFragment {
+            val model = ResultsViewModel(this)
+            assertEquals("NO RESULTS", model.infoText.value)
+            //TODO etc.
+        }
+
     }
+
+    //TODO other tests
+
 }

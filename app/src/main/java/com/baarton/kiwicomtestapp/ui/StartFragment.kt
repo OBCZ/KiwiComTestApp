@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.baarton.kiwicomtestapp.R
-import com.baarton.kiwicomtestapp.db.AppDatabase
+import com.baarton.kiwicomtestapp.app.IDatabaseModule
 import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
@@ -25,7 +25,7 @@ class StartFragment : Fragment() {
         fun newInstance() = StartFragment()
     }
 
-    private val databaseModule: AppDatabase by inject()
+    private val databaseModule: IDatabaseModule by inject()
 
     private lateinit var btnStart: Button
     private lateinit var btnNuke: Button
@@ -57,7 +57,7 @@ class StartFragment : Fragment() {
     private fun nukeDb() {
         lifecycleScope.launch {
             logger.log(Level.INFO, "Nuking the DB: START")
-            databaseModule.flightDao().nuke()
+            databaseModule.db.flightDao().nuke()
             logger.log(Level.INFO, "Nuking the DB: END")
             Toast.makeText(context, getString(R.string.text_start_flights_cleared), Toast.LENGTH_SHORT).show()
         }

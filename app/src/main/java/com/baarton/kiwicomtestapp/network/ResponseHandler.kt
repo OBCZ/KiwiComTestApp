@@ -1,5 +1,6 @@
 package com.baarton.kiwicomtestapp.network
 
+import com.baarton.kiwicomtestapp.app.IResponseHandler
 import com.baarton.kiwicomtestapp.data.FlightData
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -7,11 +8,11 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 
-class ResponseHandler {
+class ResponseHandler: IResponseHandler {
 
     private val logger = Logger.getLogger(ResponseHandler::class.java.name)
 
-    fun parse(response: String): FlightData {
+    override fun parse(response: String): FlightData {
         val flightData: FlightData?
         try {
             flightData = Gson().fromJson(response, FlightData::class.java)
