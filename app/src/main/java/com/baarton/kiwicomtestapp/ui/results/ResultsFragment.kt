@@ -18,7 +18,6 @@ import com.baarton.kiwicomtestapp.ui.StartFragment
 import com.google.android.material.button.MaterialButton
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -32,7 +31,7 @@ class ResultsFragment : Fragment() {
     }
 
     private val requestHandler: IRequestHandler by inject()
-    private val resultsViewModel: ResultsViewModel by viewModel { parametersOf(this) }
+    private val resultsViewModel: ResultsViewModel by viewModel()
 
     private lateinit var overviewTextView: TextView
     private lateinit var infoTextView: TextView
@@ -68,12 +67,26 @@ class ResultsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        resultsViewModel.overviewText.observe(viewLifecycleOwner, { newText -> overviewTextView.text = newText })
+        resultsViewModel.overviewTextItemAmount.observe(viewLifecycleOwner, {
+                newItemAmount -> overviewTextView.text = when (newItemAmount) {
+                    0 -> { getString(R.string.text_empty) }
+                    else -> { getString(R.string.text_results_heading, newItemAmount) }
+                }
+        })
         resultsViewModel.overviewTextVisibility.observe(viewLifecycleOwner, { newVisibility -> infoTextView.visibility = newVisibility })
-        resultsViewModel.infoText.observe(viewLifecycleOwner, { newText -> infoTextView.text = newText })
+        resultsViewModel.infoTextRes.observe(viewLifecycleOwner, { newTextResId -> infoTextView.text = getString(newTextResId) })
         resultsViewModel.infoTextVisibility.observe(viewLifecycleOwner, { newVisibility -> infoTextView.visibility = newVisibility })
         resultsViewModel.progressBarVisibility.observe(viewLifecycleOwner, { newVisibility -> progressBar.visibility = newVisibility })
         resultsViewModel.flightListData.observe(viewLifecycleOwner, FlightListObserver())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
+    }
+
+    private fun loadData() {
+        resultsViewModel.loadData()
     }
 
     override fun onStop() {

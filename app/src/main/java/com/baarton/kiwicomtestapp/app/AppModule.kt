@@ -13,7 +13,7 @@ object AppModule {
             single { requestHandler }
             single { responseHandler }
             single { databaseModule }
-            viewModel { parameters -> ResultsViewModel(parameters.get()) }
+            viewModel { ResultsViewModel() }
         }
     }
 

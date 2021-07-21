@@ -2,6 +2,8 @@
 
     <string name="app_name">KiwiCom Test App</string>
 
+    <string name="text_empty"/>
+
     <string name="text_start">Hello fellow traveler! Let\'s check some popular flights for today shall we? You can start by clicking \"Show me!\".\nIf you click on \"Clear\", you will clear the locally stored flights and then you can start all over again.</string>
     <string name="button_start">Show me!</string>
     <string name="button_clear">Clear</string>

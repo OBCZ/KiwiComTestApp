@@ -1,8 +1,9 @@
 package com.baarton.kiwicomtestapp
 
 import android.os.Build
+import android.view.View
 import androidx.fragment.app.testing.launchFragment
-import androidx.fragment.app.testing.withFragment
+import androidx.lifecycle.Lifecycle
 import com.baarton.kiwicomtestapp.app.TestApp
 import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import com.baarton.kiwicomtestapp.ui.results.ResultsViewModel
@@ -20,19 +21,20 @@ class ExampleUnitTest : KoinTest {
 
     @Test
     fun initViewModelTest() {
-
-        val fr = launchFragment {
-            ResultsFragment.newInstance()
-        }
-
-        fr.withFragment {
-            val model = ResultsViewModel(this)
-            assertEquals("NO RESULTS", model.infoText.value)
-            //TODO etc.
-        }
-
+        val model = ResultsViewModel()
+        assertEquals(R.string.text_results_nothing, model.infoTextRes.value)
+        assertEquals(0, model.overviewTextItemAmount.value)
+        assertEquals(View.GONE, model.overviewTextVisibility.value)
+        assertEquals(View.VISIBLE, model.infoTextVisibility.value)
+        assertEquals(View.GONE, model.progressBarVisibility.value)
     }
 
-    //TODO other tests
+    @Test
+    fun resultsFragmentTest() {
+        val fragmentUnderTest = launchFragment { ResultsFragment.newInstance() }
+        fragmentUnderTest.moveToState(Lifecycle.State.CREATED).onFragment {
+            //TODO actual test
+        }
+    }
 
 }
