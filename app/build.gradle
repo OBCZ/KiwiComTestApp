@@ -64,6 +64,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.5.1"
     testImplementation "io.insert-koin:koin-test:$koin_version"
     testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }

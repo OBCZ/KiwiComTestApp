@@ -2,13 +2,14 @@ package com.baarton.kiwicomtestapp
 
 import android.os.Build
 import android.view.View
-import androidx.fragment.app.testing.launchFragment
-import androidx.lifecycle.Lifecycle
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.baarton.kiwicomtestapp.app.TestApp
-import com.baarton.kiwicomtestapp.ui.results.ResultsFragment
 import com.baarton.kiwicomtestapp.ui.results.ResultsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.koin.test.KoinTest
 import org.robolectric.RobolectricTestRunner
@@ -18,6 +19,13 @@ import org.robolectric.annotation.Config
 @Config(application = TestApp::class, sdk = [Build.VERSION_CODES.P])
 @RunWith(RobolectricTestRunner::class)
 class ExampleUnitTest : KoinTest {
+
+    @get:Rule
+    val testInstantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val testCoroutineRule = TestCoroutineRule()
 
     @Test
     fun initViewModelTest() {
@@ -29,12 +37,15 @@ class ExampleUnitTest : KoinTest {
         assertEquals(View.GONE, model.progressBarVisibility.value)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun resultsFragmentTest() {
-        val fragmentUnderTest = launchFragment { ResultsFragment.newInstance() }
-        fragmentUnderTest.moveToState(Lifecycle.State.CREATED).onFragment {
-            //TODO actual test
+    fun loadDataTest() {
+        testCoroutineRule.runBlockingTest {
+            val model = ResultsViewModel()
+            model.loadData()
         }
+        //TODO actual test
+        assert(true)
     }
 
 }
