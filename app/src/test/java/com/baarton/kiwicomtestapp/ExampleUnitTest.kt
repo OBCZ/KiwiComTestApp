@@ -6,11 +6,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.baarton.kiwicomtestapp.app.TestApp
 import com.baarton.kiwicomtestapp.ui.results.ResultsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -26,6 +28,11 @@ class ExampleUnitTest : KoinTest {
     @ExperimentalCoroutinesApi
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
+
+    @After
+    fun after() {
+        stopKoin()
+    }
 
     @Test
     fun initViewModelTest() {

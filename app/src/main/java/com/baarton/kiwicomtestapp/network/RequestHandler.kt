@@ -24,7 +24,7 @@ class RequestHandler(context: Context): IRequestHandler {
         logger.log(Level.INFO, "Request queue object initialized.")
     }
 
-    override val imageLoader: ImageLoader? by lazy {
+    override val imageLoader: ImageLoader by lazy {
         ImageLoader(requestQueue,
             object : ImageLoader.ImageCache {
 
